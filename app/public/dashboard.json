@@ -1,0 +1,602 @@
+{
+  "school": "Bright Minds Academy",
+  "className": "10-A",
+  "subjects": [
+    "Physics",
+    "Chemistry",
+    "Maths"
+  ],
+  "subjectsWithScores": [
+    "Physics"
+  ],
+  "students": [
+    "Aarav Sharma",
+    "Diya Patel",
+    "Kabir Singh"
+  ],
+  "subjectEnrollment": {
+    "Aarav Sharma": [
+      "Physics",
+      "Chemistry",
+      "Maths"
+    ],
+    "Diya Patel": [
+      "Physics",
+      "Maths"
+    ],
+    "Kabir Singh": [
+      "Physics",
+      "Chemistry",
+      "Maths"
+    ]
+  },
+  "attendance": {
+    "Aarav Sharma": {
+      "attendancePct": 92.5,
+      "presentPct": 85.0,
+      "onlinePct": 7.5,
+      "absentPct": 7.5
+    },
+    "Diya Patel": {
+      "attendancePct": 88.0,
+      "presentPct": 80.0,
+      "onlinePct": 8.0,
+      "absentPct": 12.0
+    },
+    "Kabir Singh": {
+      "attendancePct": 75.0,
+      "presentPct": 70.0,
+      "onlinePct": 5.0,
+      "absentPct": 25.0
+    }
+  },
+  "syllabusProgress": {
+    "Physics": 60.0,
+    "Chemistry": 40.0,
+    "Maths": 55.0
+  },
+  "scored": {
+    "Physics": {
+      "classAvg": {
+        "byTypology": {
+          "Analysing": 83.33,
+          "Applying": 75.0,
+          "Understanding / Remembering": 78.57
+        },
+        "byDifficulty": {
+          "Easy": 75.0,
+          "Hard": 83.33,
+          "Medium": 78.57
+        },
+        "byType": {
+          "Numerical": 78.57,
+          "Theory": 78.57
+        },
+        "overall": 78.57,
+        "submittedCount": 2,
+        "totalStudents": 3,
+        "totalTests": 2,
+        "totalMarksAllTests": 14.0
+      },
+      "students": {
+        "Aarav Sharma": {
+          "enrolled": true,
+          "overall": 78.57,
+          "byTypology": {
+            "Analysing": 100.0,
+            "Applying": 75.0,
+            "Understanding / Remembering": 71.43
+          },
+          "byDifficulty": {
+            "Easy": 75.0,
+            "Hard": 100.0,
+            "Medium": 71.43
+          },
+          "byType": {
+            "Numerical": 85.71,
+            "Theory": 71.43
+          },
+          "byTopic": {
+            "Coulomb's Law (MCQ)": 75.0,
+            "Coulomb's Law (Subjective)": 80.0
+          },
+          "byTopicDifficulty": {
+            "Coulomb's Law (MCQ)": {
+              "Easy": 50.0,
+              "Medium": 100.0
+            },
+            "Coulomb's Law (Subjective)": {
+              "Easy": 100.0,
+              "Hard": 100.0,
+              "Medium": 60.0
+            }
+          },
+          "trend": [
+            {
+              "test": "phy_test1",
+              "accuracy": 80.0
+            },
+            {
+              "test": "phy_test2",
+              "accuracy": 75.0
+            }
+          ],
+          "priority": [
+            {
+              "topic": "Coulomb's Law (MCQ)",
+              "typology": "Understanding / Remembering",
+              "difficulty": "Easy",
+              "accuracy": 50.0,
+              "marks": 2.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Applying",
+              "difficulty": "Medium",
+              "accuracy": 50.0,
+              "marks": 2.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Understanding / Remembering",
+              "difficulty": "Medium",
+              "accuracy": 66.67,
+              "marks": 3.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Analysing",
+              "difficulty": "Hard",
+              "accuracy": 100.0,
+              "marks": 3.0
+            },
+            {
+              "topic": "Coulomb's Law (MCQ)",
+              "typology": "Applying",
+              "difficulty": "Medium",
+              "accuracy": 100.0,
+              "marks": 2.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Understanding / Remembering",
+              "difficulty": "Easy",
+              "accuracy": 100.0,
+              "marks": 2.0
+            }
+          ],
+          "questions": [
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q1",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 2.0,
+              "marks": 2.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q2",
+              "difficulty": "Medium",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 2.0,
+              "marks": 3.0,
+              "accuracy": 66.67
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q3",
+              "difficulty": "Medium",
+              "typology": "Applying",
+              "type": "Numerical",
+              "score": 1.0,
+              "marks": 2.0,
+              "accuracy": 50.0
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q4",
+              "difficulty": "Hard",
+              "typology": "Analysing",
+              "type": "Numerical",
+              "score": 3.0,
+              "marks": 3.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q216",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 1.0,
+              "marks": 1.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q222",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 0.0,
+              "marks": 1.0,
+              "accuracy": 0.0
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q310 (i)",
+              "difficulty": "Medium",
+              "typology": "Applying",
+              "type": "Numerical",
+              "score": 2.0,
+              "marks": 2.0,
+              "accuracy": 100.0
+            }
+          ]
+        },
+        "Diya Patel": {
+          "enrolled": true,
+          "overall": 78.57,
+          "byTypology": {
+            "Analysing": 66.67,
+            "Applying": 75.0,
+            "Understanding / Remembering": 85.71
+          },
+          "byDifficulty": {
+            "Easy": 75.0,
+            "Hard": 66.67,
+            "Medium": 85.71
+          },
+          "byType": {
+            "Numerical": 71.43,
+            "Theory": 85.71
+          },
+          "byTopic": {
+            "Coulomb's Law (MCQ)": 75.0,
+            "Coulomb's Law (Subjective)": 80.0
+          },
+          "byTopicDifficulty": {
+            "Coulomb's Law (MCQ)": {
+              "Easy": 100.0,
+              "Medium": 50.0
+            },
+            "Coulomb's Law (Subjective)": {
+              "Easy": 50.0,
+              "Hard": 66.67,
+              "Medium": 100.0
+            }
+          },
+          "trend": [
+            {
+              "test": "phy_test1",
+              "accuracy": 80.0
+            },
+            {
+              "test": "phy_test2",
+              "accuracy": 75.0
+            }
+          ],
+          "priority": [
+            {
+              "topic": "Coulomb's Law (MCQ)",
+              "typology": "Applying",
+              "difficulty": "Medium",
+              "accuracy": 50.0,
+              "marks": 2.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Understanding / Remembering",
+              "difficulty": "Easy",
+              "accuracy": 50.0,
+              "marks": 2.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Analysing",
+              "difficulty": "Hard",
+              "accuracy": 66.67,
+              "marks": 3.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Understanding / Remembering",
+              "difficulty": "Medium",
+              "accuracy": 100.0,
+              "marks": 3.0
+            },
+            {
+              "topic": "Coulomb's Law (MCQ)",
+              "typology": "Understanding / Remembering",
+              "difficulty": "Easy",
+              "accuracy": 100.0,
+              "marks": 2.0
+            },
+            {
+              "topic": "Coulomb's Law (Subjective)",
+              "typology": "Applying",
+              "difficulty": "Medium",
+              "accuracy": 100.0,
+              "marks": 2.0
+            }
+          ],
+          "questions": [
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q1",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 1.0,
+              "marks": 2.0,
+              "accuracy": 50.0
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q2",
+              "difficulty": "Medium",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 3.0,
+              "marks": 3.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q3",
+              "difficulty": "Medium",
+              "typology": "Applying",
+              "type": "Numerical",
+              "score": 2.0,
+              "marks": 2.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q4",
+              "difficulty": "Hard",
+              "typology": "Analysing",
+              "type": "Numerical",
+              "score": 2.0,
+              "marks": 3.0,
+              "accuracy": 66.67
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q216",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 1.0,
+              "marks": 1.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q222",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": 1.0,
+              "marks": 1.0,
+              "accuracy": 100.0
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q310 (i)",
+              "difficulty": "Medium",
+              "typology": "Applying",
+              "type": "Numerical",
+              "score": 1.0,
+              "marks": 2.0,
+              "accuracy": 50.0
+            }
+          ]
+        },
+        "Kabir Singh": {
+          "enrolled": true,
+          "overall": null,
+          "byTypology": {},
+          "byDifficulty": {},
+          "byType": {},
+          "byTopic": {},
+          "byTopicDifficulty": {},
+          "trend": [
+            {
+              "test": "phy_test1",
+              "accuracy": null
+            },
+            {
+              "test": "phy_test2",
+              "accuracy": null
+            }
+          ],
+          "priority": [],
+          "questions": [
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q1",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": null,
+              "marks": 2.0,
+              "accuracy": null
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q2",
+              "difficulty": "Medium",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": null,
+              "marks": 3.0,
+              "accuracy": null
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q3",
+              "difficulty": "Medium",
+              "typology": "Applying",
+              "type": "Numerical",
+              "score": null,
+              "marks": 2.0,
+              "accuracy": null
+            },
+            {
+              "test": "phy_test1",
+              "topic": "Coulomb's Law (Subjective)",
+              "qno": "Q4",
+              "difficulty": "Hard",
+              "typology": "Analysing",
+              "type": "Numerical",
+              "score": null,
+              "marks": 3.0,
+              "accuracy": null
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q216",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": null,
+              "marks": 1.0,
+              "accuracy": null
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q222",
+              "difficulty": "Easy",
+              "typology": "Understanding / Remembering",
+              "type": "Theory",
+              "score": null,
+              "marks": 1.0,
+              "accuracy": null
+            },
+            {
+              "test": "phy_test2",
+              "topic": "Coulomb's Law (MCQ)",
+              "qno": "Q310 (i)",
+              "difficulty": "Medium",
+              "typology": "Applying",
+              "type": "Numerical",
+              "score": null,
+              "marks": 2.0,
+              "accuracy": null
+            }
+          ]
+        }
+      },
+      "testOrder": [
+        "phy_test1",
+        "phy_test2"
+      ],
+      "testLabels": {
+        "phy_test1": "Physics Test 1 (Subjective)",
+        "phy_test2": "Physics Test 2 (MCQ)"
+      },
+      "topics": [
+        "Coulomb's Law (Subjective)",
+        "Coulomb's Law (MCQ)"
+      ],
+      "typologies": [
+        "Understanding / Remembering",
+        "Applying",
+        "Analysing"
+      ],
+      "leaderboard": [
+        {
+          "student": "Aarav Sharma",
+          "testsTaken": 2,
+          "totalScore": 11.0,
+          "adjustedPct": 78.57,
+          "rank": 1
+        },
+        {
+          "student": "Diya Patel",
+          "testsTaken": 2,
+          "totalScore": 11.0,
+          "adjustedPct": 78.57,
+          "rank": 2
+        },
+        {
+          "student": "Kabir Singh",
+          "testsTaken": 0,
+          "totalScore": 0.0,
+          "adjustedPct": 0.0,
+          "rank": null
+        }
+      ],
+      "trackingOnlyExtra": {
+        "testOrder": [
+          "Test 3"
+        ],
+        "testLabels": {
+          "Test 3": "Test 3"
+        },
+        "submissions": {
+          "Aarav Sharma": [
+            "Test 3"
+          ],
+          "Diya Patel": [
+            "Test 3"
+          ],
+          "Kabir Singh": []
+        }
+      }
+    }
+  },
+  "trackingOnly": {
+    "Chemistry": {
+      "testOrder": [
+        "Unit Test 1",
+        "Unit Test 2"
+      ],
+      "testLabels": {
+        "Unit Test 1": "Unit Test 1",
+        "Unit Test 2": "Unit Test 2"
+      },
+      "submissions": {
+        "Aarav Sharma": [
+          "Unit Test 1"
+        ],
+        "Kabir Singh": [
+          "Unit Test 1",
+          "Unit Test 2"
+        ]
+      }
+    }
+  },
+  "combinedOverall": {
+    "classOverall": 78.57,
+    "students": {
+      "Aarav Sharma": 78.57,
+      "Diya Patel": 78.57,
+      "Kabir Singh": null
+    }
+  }
+}

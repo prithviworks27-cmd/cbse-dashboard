@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://cbse-dashboard/schemas/dashboard.schema.json",
+  "title": "DashboardData",
+  "description": "Contract emitted by the Python data pipeline and consumed by the React dashboard. One instance of this document = one school/class deployment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "school",
+    "className",
+    "subjects",
+    "subjectsWithScores",
+    "students",
+    "subjectEnrollment",
+    "scored",
+    "trackingOnly",
+    "combinedOverall"
+  ],
+  "properties": {
+    "school": { "type": "string" },
+    "className": { "type": "string" },
+    "subjects": { "type": "array", "items": { "type": "string" } },
+    "subjectsWithScores": { "type": "array", "items": { "type": "string" } },
+    "students": { "type": "array", "items": { "type": "string" } },
+    "subjectEnrollment": {
+      "type": "object",
+      "description": "student -> subjects they are enrolled in (authoritative, from Format D roster)",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "attendance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["attendancePct", "presentPct", "onlinePct", "absentPct"],
+        "properties": {
+          "attendancePct": { "type": "number" },
+          "presentPct": { "type": "number" },
+          "onlinePct": { "type": "number" },
+          "absentPct": { "type": "number" }
+        }
+      }
+    },
+    "syllabusProgress": {
+      "type": "object",
+      "description": "subject -> percent complete (manually entered, not derived from tests)",
+      "additionalProperties": { "type": "number" }
+    },
+    "scored": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/ScoredSubject" }
+    },
+    "trackingOnly": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/TrackingOnlySubject" }
+    },
+    "combinedOverall": {
+      "type": "object",
+      "required": ["classOverall", "students"],
+      "properties": {
+        "classOverall": { "type": ["number", "null"] },
+        "students": {
+          "type": "object",
+          "additionalProperties": { "type": ["number", "null"] }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TrackingOnlySubject": {
+      "type": "object",
+      "required": ["testOrder", "testLabels", "submissions"],
+      "properties": {
+        "testOrder": { "type": "array", "items": { "type": "string" } },
+        "testLabels": { "type": "object", "additionalProperties": { "type": "string" } },
+        "submissions": {
+          "type": "object",
+          "description": "student -> array of test ids they submitted",
+          "additionalProperties": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "ScoredSubject": {
+      "type": "object",
+      "required": ["classAvg", "students", "testOrder", "testLabels", "topics", "typologies", "leaderboard", "trackingOnlyExtra"],
+      "properties": {
+        "classAvg": {
+          "type": "object",
+          "required": ["byTypology", "byDifficulty", "byType", "overall", "submittedCount", "totalStudents", "totalTests", "totalMarksAllTests"],
+          "properties": {
+            "byTypology": { "type": "object", "additionalProperties": { "type": "number" } },
+            "byDifficulty": { "type": "object", "additionalProperties": { "type": "number" } },
+            "byType": { "type": "object", "additionalProperties": { "type": "number" } },
+            "overall": { "type": "number" },
+            "submittedCount": { "type": "integer" },
+            "totalStudents": { "type": "integer" },
+            "totalTests": { "type": "integer" },
+            "totalMarksAllTests": { "type": "number" }
+          }
+        },
+        "students": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/StudentSubjectEntry" }
+        },
+        "testOrder": { "type": "array", "items": { "type": "string" } },
+        "testLabels": { "type": "object", "additionalProperties": { "type": "string" } },
+        "topics": { "type": "array", "items": { "type": "string" } },
+        "typologies": { "type": "array", "items": { "type": "string" } },
+        "leaderboard": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/LeaderboardEntry" }
+        },
+        "trackingOnlyExtra": {
+          "type": "object",
+          "required": ["testOrder", "testLabels", "submissions"],
+          "properties": {
+            "testOrder": { "type": "array", "items": { "type": "string" } },
+            "testLabels": { "type": "object", "additionalProperties": { "type": "string" } },
+            "submissions": {
+              "type": "object",
+              "additionalProperties": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "LeaderboardEntry": {
+      "type": "object",
+      "required": ["student", "testsTaken", "totalScore", "adjustedPct", "rank"],
+      "properties": {
+        "student": { "type": "string" },
+        "testsTaken": { "type": "integer" },
+        "totalScore": { "type": "number" },
+        "adjustedPct": { "type": "number" },
+        "rank": { "type": ["integer", "null"] }
+      }
+    },
+    "StudentSubjectEntry": {
+      "type": "object",
+      "required": ["enrolled", "overall", "byTypology", "byDifficulty", "byType", "byTopic", "byTopicDifficulty", "trend", "priority", "questions"],
+      "properties": {
+        "enrolled": { "type": "boolean" },
+        "overall": { "type": ["number", "null"] },
+        "byTypology": { "type": "object", "additionalProperties": { "type": "number" } },
+        "byDifficulty": { "type": "object", "additionalProperties": { "type": "number" } },
+        "byType": { "type": "object", "additionalProperties": { "type": "number" } },
+        "byTopic": { "type": "object", "additionalProperties": { "type": "number" } },
+        "byTopicDifficulty": {
+          "type": "object",
+          "additionalProperties": { "type": "object", "additionalProperties": { "type": "number" } }
+        },
+        "trend": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["test", "accuracy"],
+            "properties": {
+              "test": { "type": "string" },
+              "accuracy": { "type": ["number", "null"] }
+            }
+          }
+        },
+        "priority": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["topic", "typology", "difficulty", "accuracy", "marks"],
+            "properties": {
+              "topic": { "type": "string" },
+              "typology": { "type": "string" },
+              "difficulty": { "type": "string" },
+              "accuracy": { "type": "number" },
+              "marks": { "type": "number" }
+            }
+          }
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["test", "topic", "qno", "difficulty", "typology", "type", "score", "marks", "accuracy"],
+            "properties": {
+              "test": { "type": "string" },
+              "topic": { "type": "string" },
+              "qno": { "type": "string" },
+              "difficulty": { "type": "string" },
+              "typology": { "type": "string" },
+              "type": { "type": "string" },
+              "score": { "type": ["number", "null"] },
+              "marks": { "type": "number" },
+              "accuracy": { "type": ["number", "null"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}

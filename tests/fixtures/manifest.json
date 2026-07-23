@@ -1,0 +1,56 @@
+{
+  "school": "Bright Minds Academy",
+  "className": "10-A",
+  "rosterPath": "roster.csv",
+  "attendance": {
+    "Aarav Sharma": {
+      "attendancePct": 92.5,
+      "presentPct": 85.0,
+      "onlinePct": 7.5,
+      "absentPct": 7.5
+    },
+    "Diya Patel": {
+      "attendancePct": 88.0,
+      "presentPct": 80.0,
+      "onlinePct": 8.0,
+      "absentPct": 12.0
+    },
+    "Kabir Singh": {
+      "attendancePct": 75.0,
+      "presentPct": 70.0,
+      "onlinePct": 5.0,
+      "absentPct": 25.0
+    }
+  },
+  "syllabusProgress": {
+    "Physics": 60.0,
+    "Chemistry": 40.0,
+    "Maths": 55.0
+  },
+  "subjects": {
+    "Physics": {
+      "scoredTests": [
+        {
+          "path": "physics_test1_format_a.xlsx",
+          "format": "A",
+          "test_id": "phy_test1",
+          "test_label": "Physics Test 1 (Subjective)"
+        },
+        {
+          "path": "physics_test2_format_b.xlsx",
+          "format": "B",
+          "test_id": "phy_test2",
+          "test_label": "Physics Test 2 (MCQ)"
+        }
+      ],
+      "trackingGrid": "physics_tracking.csv"
+    },
+    "Chemistry": {
+      "scoredTests": [],
+      "trackingGrid": "chemistry_tracking.csv"
+    },
+    "Maths": {
+      "scoredTests": []
+    }
+  }
+}
