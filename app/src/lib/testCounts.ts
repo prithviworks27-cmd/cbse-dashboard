@@ -5,8 +5,11 @@ export interface TestCounts {
   due: string[]
 }
 
-// A test counts as "taken" for a scored subject if the student has at least one question
-// row for it (the pipeline only emits question rows for tests a student actually submitted).
+// A test counts as "taken" for a scored subject only if the student has at least one
+// question row with a non-null score for it. The pipeline emits a question row for every
+// test a student appears on the roster for, whether or not they actually submitted it --
+// an unsubmitted test's rows all carry score: null, so row *existence* alone is not a
+// reliable signal (a student can have rows for a test they never took at all).
 export function studentTestCounts(data: DashboardData, student: string): TestCounts {
   const taken: string[] = []
   const due: string[] = []
@@ -15,7 +18,8 @@ export function studentTestCounts(data: DashboardData, student: string): TestCou
   for (const subject of enrolledSubjects) {
     const scored = data.scored[subject]
     if (scored) {
-      const submittedTestIds = new Set(scored.students[student]?.questions.map((q) => q.test) ?? [])
+      const questions = scored.students[student]?.questions ?? []
+      const submittedTestIds = new Set(questions.filter((q) => q.score !== null).map((q) => q.test))
       for (const testId of scored.testOrder) {
         const label = scored.testLabels[testId] ?? testId
         ;(submittedTestIds.has(testId) ? taken : due).push(label)

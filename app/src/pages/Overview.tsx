@@ -1,8 +1,10 @@
 import { AttendanceCard } from '../components/AttendanceCard'
 import { CombinedOverallCard } from '../components/CombinedOverallCard'
+import { LeaderboardTable } from '../components/LeaderboardTable'
 import { SubjectSnapshotCard } from '../components/SubjectSnapshotCard'
 import { SyllabusProgress } from '../components/SyllabusProgress'
 import { TestsCountCard } from '../components/TestsCountCard'
+import { buildCombinedLeaderboard } from '../lib/combinedLeaderboard'
 import { classTestCounts, studentTestCounts } from '../lib/testCounts'
 import type { DashboardData } from '../types/dashboard'
 
@@ -43,6 +45,9 @@ export function Overview({ data, student }: OverviewProps) {
       </div>
 
       {data.syllabusProgress && <SyllabusProgress progress={data.syllabusProgress} />}
+
+      <h2>Leaderboard</h2>
+      <LeaderboardTable entries={buildCombinedLeaderboard(data)} />
     </div>
   )
 }

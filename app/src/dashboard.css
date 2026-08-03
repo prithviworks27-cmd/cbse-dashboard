@@ -85,6 +85,18 @@
   gap: 14px;
 }
 
+.radar-grid-2x2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Cards stay full-width, aligned with the tables above/below -- only the chart drawn
+   inside is scaled down and centered, so alignment never depends on chart size. */
+.radar-grid-2x2 svg {
+  max-width: 220px;
+  display: block;
+  margin: 0 auto;
+}
+
 .stat {
   font-family: var(--font-head);
   font-size: 30px;
@@ -148,6 +160,30 @@ table.question-table th, table.question-table td {
 table.submission-grid td.submitted { color: var(--good); }
 table.submission-grid td.not-submitted { color: var(--bad); }
 
+.rank-medal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+}
+.rank-medal-gold {
+  background: linear-gradient(135deg, #FFD86B, #C9971F);
+  color: #1E2A38;
+}
+.rank-medal-silver {
+  background: linear-gradient(135deg, #E7EAEE, #A9B2BC);
+  color: #1E2A38;
+}
+.rank-medal-bronze {
+  background: linear-gradient(135deg, #D08A4F, #96552B);
+  color: #F8F9F3;
+}
+
 .question-breakdown {
   display: flex;
   flex-direction: column;
@@ -159,6 +195,44 @@ table.submission-grid td.not-submitted { color: var(--bad); }
 }
 .question-breakdown-test .question-table {
   margin-top: 10px;
+}
+
+.struggling-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.struggling-chapter h4 {
+  margin: 0 0 6px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.struggling-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.struggling-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 13px;
+}
+.struggling-meta {
+  font-size: 11px;
+  white-space: nowrap;
+}
+.struggling-accuracy {
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 /* Overview extras */
@@ -199,6 +273,7 @@ table.submission-grid td.not-submitted { color: var(--bad); }
 .syllabus-bar-fill {
   height: 100%;
   background: var(--good);
+  transition: width 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .syllabus-pct {
   text-align: right;

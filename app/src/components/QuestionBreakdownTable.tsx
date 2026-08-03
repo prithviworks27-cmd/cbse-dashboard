@@ -8,7 +8,9 @@ interface QuestionBreakdownTableProps {
 }
 
 export function QuestionBreakdownTable({ questions, testOrder, testLabels }: QuestionBreakdownTableProps) {
-  const testsWithQuestions = testOrder.filter((testId) => questions.some((q) => q.test === testId))
+  // A row exists for every roster'd test regardless of submission (score: null if not taken) --
+  // only show tests the student actually has a real score for, same rule as studentTestCounts.
+  const testsWithQuestions = testOrder.filter((testId) => questions.some((q) => q.test === testId && q.score !== null))
 
   if (testsWithQuestions.length === 0) {
     return <p className="mono">No question-level data yet.</p>

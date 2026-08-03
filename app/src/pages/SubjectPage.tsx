@@ -1,11 +1,14 @@
 import { LeaderboardTable } from '../components/LeaderboardTable'
 import { ProtractorRadar, type RadarPoint } from '../components/ProtractorRadar'
 import { QuestionBreakdownTable } from '../components/QuestionBreakdownTable'
+import { RightWrongBarChart } from '../components/RightWrongBarChart'
+import { StrugglingTopics } from '../components/StrugglingTopics'
 import { SubmissionGrid } from '../components/SubmissionGrid'
 import { TopicDifficultyHeatmap } from '../components/TopicDifficultyHeatmap'
 import { TrendChart } from '../components/TrendChart'
 import { scoreColor } from '../lib/color'
 import { enrolledStudents, subjectStatus } from '../lib/enrollment'
+import { countRightWrong } from '../lib/rightWrongCounts'
 import { studentTestCounts } from '../lib/testCounts'
 import type { DashboardData } from '../types/dashboard'
 
@@ -86,7 +89,7 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
             </div>
           </div>
 
-          <div className="radar-grid">
+          <div className="radar-grid radar-grid-2x2">
             <div className="card">
               <h3>Cognitive Typology</h3>
               <ProtractorRadar
@@ -111,11 +114,20 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
                 title="Theory vs numerical radar"
               />
             </div>
+            <div className="card">
+              <h3>Questions Attempted</h3>
+              <RightWrongBarChart key={student} {...countRightWrong(entry.questions)} />
+            </div>
           </div>
 
           <div className="card">
             <h3>Topic × Difficulty</h3>
             <TopicDifficultyHeatmap topics={subj.topics} difficulties={difficultyOrder} data={entry.byTopicDifficulty} />
+          </div>
+
+          <div className="card">
+            <h3>Struggling Topics</h3>
+            <StrugglingTopics priority={entry.priority} />
           </div>
 
           <div className="card">

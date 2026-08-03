@@ -24,11 +24,16 @@ function baseData(): DashboardData {
             byTopicDifficulty: {},
             trend: [],
             priority: [],
-            questions: [{ test: 't1', topic: 'Motion', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: 4, marks: 5, accuracy: 80 }],
+            questions: [
+              { test: 't1', topic: 'Motion', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: 4, marks: 5, accuracy: 80 },
+              // t3: the pipeline emits a row for every roster'd test regardless of submission --
+              // this row exists but score is null, meaning Asha did NOT actually take t3.
+              { test: 't3', topic: 'Motion', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: null, marks: 5, accuracy: null },
+            ],
           },
         },
-        testOrder: ['t1', 't2'],
-        testLabels: { t1: 'Test 1', t2: 'Test 2' },
+        testOrder: ['t1', 't2', 't3'],
+        testLabels: { t1: 'Test 1', t2: 'Test 2', t3: 'Test 3' },
         topics: ['Motion'],
         typologies: ['Applying'],
         leaderboard: [],
@@ -47,6 +52,15 @@ describe('studentTestCounts', () => {
     const { taken, due } = studentTestCounts(baseData(), 'Asha')
     expect(taken).toContain('Test 1')
     expect(due).toContain('Test 2')
+  })
+
+  it('does not count a test as taken just because a (null-score) row exists for it', () => {
+    // Regression test: a student who never submitted a test still gets a question row
+    // for it (score: null) since the pipeline emits one per roster'd test. Row existence
+    // alone must not be read as "taken" -- only a non-null score counts.
+    const { taken, due } = studentTestCounts(baseData(), 'Asha')
+    expect(due).toContain('Test 3')
+    expect(taken).not.toContain('Test 3')
   })
 
   it('includes tracking-only submissions in taken/due', () => {
