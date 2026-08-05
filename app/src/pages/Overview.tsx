@@ -31,7 +31,7 @@ export function Overview({ data, student }: OverviewProps) {
 
   return (
     <div className="page">
-      <div className="card-grid">
+      <div className="card-grid card-grid-2x2">
         {!isClassView && <AttendanceCard entry={attendanceEntry} />}
         <CombinedOverallCard value={combinedValue} classAvg={data.combinedOverall.classOverall} isClassView={isClassView} />
         <TestsCountCard {...testsCard} />

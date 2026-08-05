@@ -95,6 +95,10 @@
   gap: 14px;
 }
 
+.card-grid-2x2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .radar-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -120,6 +124,25 @@
   margin: 4px 0;
 }
 
+.stat-pill {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--card);
+  padding: 4px 22px;
+  border-radius: 999px;
+  margin: 4px 0;
+}
+.stat-pill-good { background: var(--good); }
+.stat-pill-bad { background: var(--bad); }
+
+.stat-pill-caption {
+  display: block;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
 .soft {
   color: var(--ink-soft);
 }
@@ -127,11 +150,15 @@
 .delta-pos { color: var(--good); }
 .delta-neg { color: var(--bad); }
 
-/* Heatmap */
+/* Heatmap -- topics run across columns (many, can be wide), difficulties down the rows (few) */
+.heatmap-scroll {
+  overflow-x: auto;
+}
 .heatmap {
   display: table;
   border-collapse: collapse;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
 }
 .heatmap-row {
   display: table-row;
@@ -143,7 +170,13 @@
   text-align: center;
   font-size: 12px;
 }
-.heatmap-row-label, .heatmap-col-label {
+.heatmap-row-label {
+  text-align: left;
+  color: var(--ink-soft);
+  background: var(--card);
+  white-space: nowrap;
+}
+.heatmap-col-label {
   text-align: left;
   color: var(--ink-soft);
   background: var(--card);
@@ -155,6 +188,7 @@
 .heatmap-value {
   color: white;
   font-weight: 600;
+  white-space: nowrap;
 }
 .heatmap-corner {
   background: var(--card);
@@ -267,10 +301,6 @@ table.submission-grid td.not-submitted { color: var(--bad); }
 }
 
 /* Overview extras */
-.tests-count-row {
-  display: flex;
-  gap: 16px;
-}
 .tests-count-stat {
   background: none;
   border: none;
