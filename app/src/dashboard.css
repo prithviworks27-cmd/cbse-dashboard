@@ -231,16 +231,27 @@ table.submission-grid td.not-submitted { color: var(--bad); }
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 .struggling-item {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  align-items: baseline;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--hairline);
+  padding: 14px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
   font-size: 13px;
+}
+.struggling-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.struggling-topic {
+  font-weight: 600;
+  color: var(--ink);
 }
 .struggling-meta {
   font-size: 11px;
@@ -250,8 +261,9 @@ table.submission-grid td.not-submitted { color: var(--bad); }
   font-weight: 600;
   white-space: nowrap;
   font-size: 12px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 999px;
+  flex-shrink: 0;
 }
 
 /* Overview extras */
