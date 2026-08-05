@@ -14,10 +14,12 @@ in the final report):
         the denominator, even if they left some individual questions in it
         blank; a test they never touched at all is excluded entirely).
       - StudentSubjectEntry.trend       (per-test accuracy, same reasoning).
-      - LeaderboardEntry.adjustedPct    (denominator = every test in the
-        subject regardless of attendance, per step 7).
+      - LeaderboardEntry.adjustedPct    (denominator = only tests actually
+        attempted, within the subject -- ranks purely on performance in the
+        tests taken, never penalized for tests not yet due/attempted).
       - combinedOverall                 (denominator = only tests actually
-        attempted, across all enrolled subjects, per step 8).
+        attempted, across all enrolled subjects, per step 8 -- same
+        attempted-only rule as adjustedPct, just summed across subjects).
 
   * QUESTION-LEVEL gating (only rows where that specific question was
     submitted). Used for:
@@ -218,18 +220,24 @@ def build_leaderboard(
     test_order: List[str],
     test_total_marks: Dict[str, float],
 ) -> List[LeaderboardEntry]:
-    total_possible = sum(test_total_marks.get(t, 0.0) for t in test_order)
+    # adjustedPct ranks students purely on performance in the tests they've actually
+    # taken (marks scored / marks possible over attempted tests only) -- the same
+    # attempted-only denominator as build_student_subject_entry's `overall` and
+    # compute_combined_overall, so a student's rank is consistent with their own
+    # displayed score everywhere, rather than penalizing tests not yet taken.
     rows = []
     for student in enrolled_students:
         test_level = _student_test_level(df, student)
         num = 0.0
+        den = 0.0
         tests_taken = 0
         for test_id in test_order:
             info = test_level.get(test_id)
             if info and info["attempted"]:
                 num += info["score_sum"]
+                den += test_total_marks.get(test_id, 0.0)
                 tests_taken += 1
-        adjusted_pct = round(num / total_possible * 100, 2) if total_possible > 0 else 0.0
+        adjusted_pct = round(num / den * 100, 2) if den > 0 else 0.0
         rows.append({
             "student": student, "testsTaken": tests_taken, "totalScore": round(num, 2),
             "adjustedPct": adjusted_pct,
@@ -337,8 +345,9 @@ def compute_combined_overall(
 ):
     """Cross-subject headline number per step 8: marks scored across every
     ATTEMPTED test in every enrolled subject, over marks POSSIBLE in only
-    those attempted tests (deliberately NOT the subject-wide full-pool
-    denominator the leaderboard uses -- see module docstring)."""
+    those attempted tests -- same attempted-only rule as
+    LeaderboardEntry.adjustedPct, just summed across every enrolled subject
+    instead of one (see module docstring)."""
     per_student: Dict[str, Optional[float]] = {}
     for student in students:
         enrolled_subjects = subject_enrollment.get(student, [])

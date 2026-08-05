@@ -27,7 +27,7 @@ export function LeaderboardTable({ entries }: { entries: LeaderboardEntry[] }) {
           <th>Rank</th>
           <th>Student</th>
           <th>Tests taken</th>
-          <th>Adjusted %</th>
+          <th>Score %</th>
         </tr>
       </thead>
       <tbody>

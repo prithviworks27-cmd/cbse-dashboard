@@ -4,11 +4,11 @@ import { studentTestCounts } from './testCounts'
 /**
  * Cross-subject leaderboard for the Overview page, ranked by each student's
  * combinedOverall percentage (marks scored / marks possible across every test they've
- * actually attempted, in every enrolled subject -- see combinedOverall's own docs for why
- * that's a different denominator than the per-subject leaderboard). Tie-break: more tests
- * taken (across all subjects) wins, then alphabetical for full determinism. Students with
- * no combinedOverall (zero attempts anywhere) get rank: null, same convention as the
- * per-subject leaderboard.
+ * actually attempted, in every enrolled subject -- same attempted-only rule the
+ * per-subject leaderboard's adjustedPct uses, just summed across every enrolled subject
+ * instead of one). Tie-break: more tests taken (across all subjects) wins, then
+ * alphabetical for full determinism. Students with no combinedOverall (zero attempts
+ * anywhere) get rank: null, same convention as the per-subject leaderboard.
  */
 export function buildCombinedLeaderboard(data: DashboardData): LeaderboardEntry[] {
   const rows = data.students.map((student) => ({
