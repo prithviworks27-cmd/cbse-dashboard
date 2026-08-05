@@ -14,6 +14,7 @@ const Y_GRID = [0, 25, 50, 75, 100]
 
 export function TrendChart({ points, testLabels, width = 640, height = 260 }: TrendChartProps) {
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [hovered, setHovered] = useState<number | null>(null)
   const padding = { top: 16, right: 20, bottom: 60, left: 34 }
   const plotH = height - padding.top - padding.bottom
   const n = points.length
@@ -53,7 +54,22 @@ export function TrendChart({ points, testLabels, width = 640, height = 260 }: Tr
 
         {pathD && <path d={pathD} fill="none" stroke="var(--good)" strokeWidth={2} />}
         {validPoints.map((p) => (
-          <circle key={p.test} cx={xFor(p.i)} cy={yFor(p.accuracy as number)} r={3} fill="var(--good)" />
+          <g
+            key={p.test}
+            style={{ cursor: 'pointer' }}
+            onMouseEnter={() => setHovered(p.i)}
+            onMouseLeave={() => setHovered(null)}
+          >
+            {/* Larger invisible hit area -- the visible dot is too small to hover precisely. */}
+            <circle cx={xFor(p.i)} cy={yFor(p.accuracy as number)} r={10} fill="transparent" />
+            <circle
+              cx={xFor(p.i)}
+              cy={yFor(p.accuracy as number)}
+              r={hovered === p.i ? 5 : 3}
+              fill="var(--good)"
+              pointerEvents="none"
+            />
+          </g>
         ))}
         {points.map((p, i) => {
           if (p.accuracy === null) {
@@ -86,6 +102,39 @@ export function TrendChart({ points, testLabels, width = 640, height = 260 }: Tr
             </g>
           )
         })}
+
+        {hovered !== null && (() => {
+          const p = validPoints.find((vp) => vp.i === hovered)
+          if (!p) return null
+          const cx = xFor(p.i)
+          const cy = yFor(p.accuracy as number)
+          const label = `${shortLabels[p.i]}: ${Math.round(p.accuracy as number)}%`
+          const fontSize = 11
+          const boxW = label.length * fontSize * 0.62 + 16
+          const boxH = 22
+          const gap = 8
+          const fitsAbove = cy - gap - boxH >= 0
+          const boxY = fitsAbove ? cy - gap - boxH : cy + gap
+          const boxX = Math.min(Math.max(cx - boxW / 2, 2), width - boxW - 2)
+          return (
+            <g pointerEvents="none">
+              <line x1={cx} x2={cx} y1={padding.top} y2={height - padding.bottom} stroke="var(--ink-soft)" strokeWidth={1} strokeDasharray="3 3" />
+              <line x1={padding.left} x2={width - padding.right} y1={cy} y2={cy} stroke="var(--ink-soft)" strokeWidth={1} strokeDasharray="3 3" />
+              <rect x={boxX} y={boxY} width={boxW} height={boxH} rx={6} fill="var(--ink)" />
+              <text
+                x={boxX + boxW / 2}
+                y={boxY + boxH / 2}
+                fontSize={fontSize}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className="mono"
+                fill="var(--card)"
+              >
+                {label}
+              </text>
+            </g>
+          )
+        })()}
       </svg>
       {selectedLabel && <p className="mono trend-chart-caption">{selectedLabel}</p>}
     </div>
