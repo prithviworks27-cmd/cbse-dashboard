@@ -4,8 +4,8 @@
   - marks validator raising on blank/exceeded marks
   - unmatched-row assertion after a scores<->typology merge
   - leaderboard tie-break rule
-  - combinedOverall formula (attempted-only denominator, NOT the
-    leaderboard's subject-wide full-pool denominator)
+  - combinedOverall formula (attempted-only denominator, same rule
+    LeaderboardEntry.adjustedPct uses, just summed across subjects)
   - enrollment-gating logic (non-enrolled student absent from leaderboard
     and class averages)
   - the tracking-only -> scored "graduation" transition (old placeholder
@@ -175,16 +175,15 @@ def _make_row(test_id, student, qno, score, marks, submitted=True):
 
 
 def test_leaderboard_tiebreak_more_tests_taken_then_alphabetical():
-    # adjustedPct's denominator is FIXED (total marks across every test in
-    # the subject, whether attempted or not) -- so Zoe, Bob, and Cal all
-    # land on exactly the same 50% despite very different participation:
-    #   Zoe: attempted only t1, aced it (10/10)      -> 10 / 20 = 50%
-    #   Bob/Cal: attempted both tests, half marks     -> 10 / 20 = 50%
+    # adjustedPct's denominator is attempted-only (marks possible only in
+    # tests the student actually took) -- so Zoe, Bob, and Cal can land on
+    # exactly the same 50% despite very different participation:
+    #   Zoe: attempted only t1, half marks (5/10)     -> 5 / 10 = 50%
+    #   Bob/Cal: attempted both tests, half marks each -> 10 / 20 = 50%
     # Amy is included as a clearly-lower scorer for contrast.
     rows = [
-        _make_row("t1", "Amy", "Q1", 5, 10),
-        _make_row("t2", "Amy", "Q1", 0, 10),
-        _make_row("t1", "Zoe", "Q1", 10, 10),
+        _make_row("t1", "Amy", "Q1", 2, 10),
+        _make_row("t1", "Zoe", "Q1", 5, 10),
         _make_row("t2", "Zoe", "Q1", None, 10, submitted=False),
         # Bob and Cal tie exactly on percentage AND tests taken -> alphabetical
         _make_row("t1", "Bob", "Q1", 5, 10),
@@ -198,8 +197,8 @@ def test_leaderboard_tiebreak_more_tests_taken_then_alphabetical():
     board = build_leaderboard(df, ["Amy", "Zoe", "Bob", "Cal"], test_order, totals)
     by_name = {e.student: e for e in board}
 
-    assert by_name["Amy"].adjustedPct == 25.0   # 5 / 20, clearly last
-    assert by_name["Zoe"].adjustedPct == 50.0   # 10 / 20
+    assert by_name["Amy"].adjustedPct == 20.0   # 2 / 10, clearly last
+    assert by_name["Zoe"].adjustedPct == 50.0   # 5 / 10
     assert by_name["Bob"].adjustedPct == by_name["Cal"].adjustedPct == 50.0  # 10 / 20
 
     # Three-way tie at 50% between Zoe, Bob, Cal: Bob/Cal took MORE tests
@@ -227,12 +226,11 @@ def test_leaderboard_zero_submissions_gets_null_rank():
 
 
 def test_leaderboard_more_tests_taken_wins_true_tie():
-    # Construct an exact tie in adjustedPct (both land on 10/20 = 50%) where
-    # testsTaken differs, isolating the "more tests taken wins" rule.
+    # Construct an exact tie in adjustedPct where testsTaken differs,
+    # isolating the "more tests taken wins" rule.
     rows = [
-        # Dev: aces t1, never attempts t2 -> 10 / 20 = 50%
-        _make_row("t1", "Dev", "Q1", 10, 10),
-        _make_row("t2", "Dev", "Q1", None, 10, submitted=False),
+        # Dev: only attempts t1, half marks -> 5 / 10 = 50%
+        _make_row("t1", "Dev", "Q1", 5, 10),
         # Eva: half marks on both t1 and t2 -> 10 / 20 = 50%, but attempted both
         _make_row("t1", "Eva", "Q1", 5, 10),
         _make_row("t2", "Eva", "Q1", 5, 10),
@@ -248,15 +246,17 @@ def test_leaderboard_more_tests_taken_wins_true_tie():
 
 
 # ---------------------------------------------------------------------------
-# combinedOverall formula: attempted-only denominator, distinct from
-# leaderboard's subject-wide full-pool denominator
+# combinedOverall formula: attempted-only denominator, same rule
+# LeaderboardEntry.adjustedPct uses (just summed across every enrolled
+# subject instead of one) -- a student's rank should always be consistent
+# with their own displayed score, on the Overview leaderboard or any
+# per-subject leaderboard.
 # ---------------------------------------------------------------------------
 
 def test_combined_overall_uses_attempted_only_denominator():
     # Physics has 3 tests worth 10 marks each (30 total); student attempts
-    # only 1 of them and scores 5/10. Leaderboard's adjustedPct would be
-    # 5/30 = 16.67%, but combinedOverall must use only the attempted test:
-    # 5/10 = 50%.
+    # only 1 of them and scores 5/10. Both combinedOverall and the
+    # leaderboard's adjustedPct must use only the attempted test: 5/10 = 50%.
     rows = [
         _make_row("t1", "Amy", "Q1", 5, 10),
         _make_row("t2", "Amy", "Q1", None, 10, submitted=False),
@@ -269,12 +269,12 @@ def test_combined_overall_uses_attempted_only_denominator():
         subject_dfs={"Physics": df},
         subject_test_orders={"Physics": ["t1", "t2", "t3"]},
     )
-    assert per_student["Amy"] == 50.0  # NOT 16.67
+    assert per_student["Amy"] == 50.0
 
-    # For contrast, confirm the leaderboard formula (used elsewhere) really
-    # would give the smaller, full-pool-denominator number.
+    # The leaderboard's adjustedPct must agree with combinedOverall for a
+    # single-subject student -- same attempted-only formula, same result.
     board = build_leaderboard(df, ["Amy"], ["t1", "t2", "t3"], {"t1": 10.0, "t2": 10.0, "t3": 10.0})
-    assert board[0].adjustedPct == 16.67
+    assert board[0].adjustedPct == per_student["Amy"] == 50.0
 
 
 def test_combined_overall_null_when_zero_submissions_anywhere():
