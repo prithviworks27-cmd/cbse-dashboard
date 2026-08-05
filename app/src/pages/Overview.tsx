@@ -4,6 +4,7 @@ import { LeaderboardTable } from '../components/LeaderboardTable'
 import { SubjectSnapshotCard } from '../components/SubjectSnapshotCard'
 import { SyllabusProgress } from '../components/SyllabusProgress'
 import { TestsCountCard } from '../components/TestsCountCard'
+import { classAttendance } from '../lib/attendance'
 import { buildCombinedLeaderboard } from '../lib/combinedLeaderboard'
 import { classTestCounts, studentTestCounts } from '../lib/testCounts'
 import type { DashboardData } from '../types/dashboard'
@@ -27,12 +28,12 @@ export function Overview({ data, student }: OverviewProps) {
       })()
 
   const combinedValue = isClassView ? data.combinedOverall.classOverall : data.combinedOverall.students[student] ?? null
-  const attendanceEntry = isClassView ? undefined : data.attendance?.[student]
+  const attendanceEntry = isClassView ? classAttendance(data) : data.attendance?.[student]
 
   return (
     <div className="page">
       <div className="card-grid card-grid-2x2">
-        {!isClassView && <AttendanceCard entry={attendanceEntry} />}
+        <AttendanceCard entry={attendanceEntry} />
         <CombinedOverallCard value={combinedValue} classAvg={data.combinedOverall.classOverall} isClassView={isClassView} />
         <TestsCountCard {...testsCard} />
       </div>
