@@ -20,10 +20,12 @@ export function QuestionBreakdownTable({ questions, testOrder, testLabels }: Que
     <div className="question-breakdown">
       {testsWithQuestions.map((testId) => {
         const rows = questions.filter((q) => q.test === testId)
+        // "Correct" = full marks on that question, same rule as the Questions Attempted chart.
+        const correctCount = rows.filter((q) => q.score !== null && q.score === q.marks).length
         return (
           <details key={testId} className="card question-breakdown-test">
             <summary className="mono">
-              {testLabels[testId] ?? testId} <span className="soft">({rows.length} questions)</span>
+              {testLabels[testId] ?? testId} <span className="soft">({correctCount}/{rows.length})</span>
             </summary>
             <table className="mono question-table">
               <thead>
@@ -43,9 +45,9 @@ export function QuestionBreakdownTable({ questions, testOrder, testLabels }: Que
                   <tr key={`${q.test}-${q.qno}`}>
                     <td>{q.qno}</td>
                     <td>{q.topic}</td>
-                    <td>{q.difficulty}</td>
-                    <td>{q.typology}</td>
-                    <td>{q.type}</td>
+                    <td>{q.difficulty ?? '—'}</td>
+                    <td>{q.typology ?? '—'}</td>
+                    <td>{q.type ?? '—'}</td>
                     <td>{q.score ?? '—'}</td>
                     <td>{q.marks}</td>
                     <td style={{ color: q.accuracy === null ? undefined : scoreColor(q.accuracy) }}>
