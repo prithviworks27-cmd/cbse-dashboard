@@ -10,7 +10,7 @@ export interface WrappedLabel {
 const MAX_LINES = 3
 
 // Monospace (IBM Plex Mono) average advance width as a fraction of font size.
-const MONO_CHAR_WIDTH_RATIO = 0.62
+export const MONO_CHAR_WIDTH_RATIO = 0.62
 
 function bucket(testCount: number): { fontSize: number; charsPerLine: number } {
   if (testCount <= 6) return { fontSize: 11, charsPerLine: 14 }

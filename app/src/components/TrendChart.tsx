@@ -1,4 +1,6 @@
-import { labelColumnHalfWidth, wrapChartLabel } from '../lib/wrapLabel'
+import { useState } from 'react'
+import { labelColumnHalfWidth } from '../lib/wrapLabel'
+import { paperShortLabel, fitPaperLabelFontSize } from '../lib/paperLabel'
 import type { TrendPoint } from '../types/dashboard'
 
 interface TrendChartProps {
@@ -11,6 +13,7 @@ interface TrendChartProps {
 const Y_GRID = [0, 25, 50, 75, 100]
 
 export function TrendChart({ points, testLabels, width = 640, height = 260 }: TrendChartProps) {
+  const [expanded, setExpanded] = useState<string | null>(null)
   const padding = { top: 16, right: 20, bottom: 60, left: 34 }
   const plotH = height - padding.top - padding.bottom
   const n = points.length
@@ -31,50 +34,60 @@ export function TrendChart({ points, testLabels, width = 640, height = 260 }: Tr
   const validPoints = points.map((p, i) => ({ ...p, i })).filter((p) => p.accuracy !== null)
   const pathD = validPoints.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${xFor(p.i)} ${yFor(p.accuracy as number)}`).join(' ')
 
+  const shortLabels = points.map((p) => paperShortLabel(testLabels[p.test] ?? p.test, p.test))
+  const columnSpacing = n <= 1 ? plotX1 - plotX0 : (plotX1 - plotX0) / (n - 1)
+  const collapsedFontSize = fitPaperLabelFontSize(shortLabels, columnSpacing)
+  const selectedLabel = expanded !== null ? testLabels[expanded] ?? expanded : null
+
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} width="100%" role="img" aria-label="score trend across tests">
-      {Y_GRID.map((pct) => (
-        <g key={pct}>
-          <line x1={padding.left} x2={width - padding.right} y1={yFor(pct)} y2={yFor(pct)} stroke="var(--hairline)" strokeWidth={1} />
-          <text x={padding.left - 8} y={yFor(pct)} fontSize={9} textAnchor="end" dominantBaseline="middle" className="mono" fill="var(--ink-soft)">
-            {pct}
-          </text>
-        </g>
-      ))}
+    <div className="trend-chart">
+      <svg viewBox={`0 0 ${width} ${height}`} width="100%" role="img" aria-label="score trend across tests">
+        {Y_GRID.map((pct) => (
+          <g key={pct}>
+            <line x1={padding.left} x2={width - padding.right} y1={yFor(pct)} y2={yFor(pct)} stroke="var(--hairline)" strokeWidth={1} />
+            <text x={padding.left - 8} y={yFor(pct)} fontSize={9} textAnchor="end" dominantBaseline="middle" className="mono" fill="var(--ink-soft)">
+              {pct}
+            </text>
+          </g>
+        ))}
 
-      {pathD && <path d={pathD} fill="none" stroke="var(--good)" strokeWidth={2} />}
-      {validPoints.map((p) => (
-        <circle key={p.test} cx={xFor(p.i)} cy={yFor(p.accuracy as number)} r={3} fill="var(--good)" />
-      ))}
-      {points.map((p, i) => {
-        if (p.accuracy === null) {
-          return <circle key={`${p.test}-null`} cx={xFor(i)} cy={yFor(0)} r={2} fill="var(--hairline)" />
-        }
-        return null
-      })}
+        {pathD && <path d={pathD} fill="none" stroke="var(--good)" strokeWidth={2} />}
+        {validPoints.map((p) => (
+          <circle key={p.test} cx={xFor(p.i)} cy={yFor(p.accuracy as number)} r={3} fill="var(--good)" />
+        ))}
+        {points.map((p, i) => {
+          if (p.accuracy === null) {
+            return <circle key={`${p.test}-null`} cx={xFor(i)} cy={yFor(0)} r={2} fill="var(--hairline)" />
+          }
+          return null
+        })}
 
-      {points.map((p, i) => {
-        const { lines, fontSize } = wrapChartLabel(testLabels[p.test] ?? p.test, n)
-        const x = xFor(i)
-        const lineHeight = fontSize + 2
-        return (
-          <g key={p.test}>
-            {lines.map((line, li) => (
+        {points.map((p, i) => {
+          const isSelected = expanded === p.test
+          const x = xFor(i)
+          return (
+            <g
+              key={p.test}
+              onClick={() => setExpanded(isSelected ? null : p.test)}
+              style={{ cursor: 'pointer' }}
+            >
               <text
-                key={li}
                 x={x}
-                y={height - padding.bottom + 14 + li * lineHeight}
-                fontSize={fontSize}
+                y={height - padding.bottom + 14}
+                fontSize={collapsedFontSize}
+                fontWeight={isSelected ? 700 : undefined}
                 textAnchor="middle"
                 className="mono"
-                fill="var(--ink-soft)"
+                fill={isSelected ? 'var(--ink)' : 'var(--ink-soft)'}
+                textDecoration={isSelected ? undefined : 'underline'}
               >
-                {line}
+                {shortLabels[i]}
               </text>
-            ))}
-          </g>
-        )
-      })}
-    </svg>
+            </g>
+          )
+        })}
+      </svg>
+      {selectedLabel && <p className="mono trend-chart-caption">{selectedLabel}</p>}
+    </div>
   )
 }
