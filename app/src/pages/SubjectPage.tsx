@@ -82,10 +82,12 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
               </p>
             </div>
             <div className="card">
-              <h3>Tests taken / due</h3>
-              <p className="stat mono">
-                {studentTestCounts(data, student).taken.length} / {studentTestCounts(data, student).due.length}
-              </p>
+              <h3>Tests Taken</h3>
+              <p className="stat-pill stat-pill-good mono">{studentTestCounts(data, student).taken.length}</p>
+            </div>
+            <div className="card">
+              <h3>Tests Due</h3>
+              <p className="stat-pill stat-pill-bad mono">{studentTestCounts(data, student).due.length}</p>
             </div>
           </div>
 

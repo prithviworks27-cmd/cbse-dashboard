@@ -9,31 +9,35 @@ interface TestsCountCardProps {
 }
 
 export function TestsCountCard({ taken, due, takenList, dueList, isAverage }: TestsCountCardProps) {
-  const [expanded, setExpanded] = useState<'taken' | 'due' | null>(null)
+  const [takenOpen, setTakenOpen] = useState(false)
+  const [dueOpen, setDueOpen] = useState(false)
 
   return (
-    <div className="card">
-      <h3>Tests {isAverage ? '(avg per student)' : 'taken / due'}</h3>
-      <div className="tests-count-row">
-        <button type="button" className="tests-count-stat" onClick={() => setExpanded(expanded === 'taken' ? null : 'taken')}>
-          <span className="stat">{taken}</span>
-          <span className="soft mono">taken</span>
+    <>
+      <div className="card">
+        <h3>Tests Taken</h3>
+        <button type="button" className="tests-count-stat" onClick={() => setTakenOpen((v) => !v)}>
+          <span className="stat-pill stat-pill-good">{taken}</span>
+          {isAverage && <span className="soft mono stat-pill-caption">average</span>}
         </button>
-        <button type="button" className="tests-count-stat" onClick={() => setExpanded(expanded === 'due' ? null : 'due')}>
-          <span className="stat">{due}</span>
-          <span className="soft mono">due</span>
-        </button>
+        {takenOpen && (
+          <ul className="mono test-list">
+            {takenList.length === 0 ? <li className="soft">None yet.</li> : takenList.map((t) => <li key={t}>{t}</li>)}
+          </ul>
+        )}
       </div>
-      {expanded === 'taken' && (
-        <ul className="mono test-list">
-          {takenList.length === 0 ? <li className="soft">None yet.</li> : takenList.map((t) => <li key={t}>{t}</li>)}
-        </ul>
-      )}
-      {expanded === 'due' && (
-        <ul className="mono test-list">
-          {dueList.length === 0 ? <li className="soft">Nothing due.</li> : dueList.map((t) => <li key={t}>{t}</li>)}
-        </ul>
-      )}
-    </div>
+      <div className="card">
+        <h3>Tests Due</h3>
+        <button type="button" className="tests-count-stat" onClick={() => setDueOpen((v) => !v)}>
+          <span className="stat-pill stat-pill-bad">{due}</span>
+          {isAverage && <span className="soft mono stat-pill-caption">average</span>}
+        </button>
+        {dueOpen && (
+          <ul className="mono test-list">
+            {dueList.length === 0 ? <li className="soft">Nothing due.</li> : dueList.map((t) => <li key={t}>{t}</li>)}
+          </ul>
+        )}
+      </div>
+    </>
   )
 }
