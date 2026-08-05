@@ -126,8 +126,8 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
           </div>
 
           <div className="card">
-            <h3>Struggling Topics</h3>
-            <StrugglingTopics priority={entry.priority} />
+            <h3>Fix It First</h3>
+            <StrugglingTopics questions={entry.questions} testLabels={subj.testLabels} />
           </div>
 
           <div className="card">

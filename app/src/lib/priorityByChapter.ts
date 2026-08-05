@@ -1,4 +1,4 @@
-import type { PriorityWeakness } from '../types/dashboard'
+import type { PriorityWeakness, Question } from '../types/dashboard'
 
 // Topic labels in this dashboard follow the convention "<Chapter> — <Specific topic> (Paper N)"
 // (e.g. "Chapter 1 — Balancing Equations (Paper 1)", "Light — Mirrors: Ray Diagrams & Numericals
@@ -11,26 +11,34 @@ export function chapterOfTopic(topic: string): string {
   return topic.slice(0, idx).trim()
 }
 
-export interface ChapterGroup {
+export interface ChapterGroup<T> {
   chapter: string
-  items: PriorityWeakness[]
+  items: T[]
 }
 
 /**
- * Groups a student's priority weaknesses (already sorted worst-first by the pipeline) by
- * chapter, preserving that ordering within and across groups -- so the worst weakness overall
- * still appears first, just clustered with its chapter-mates.
+ * Groups already worst-first-sorted items by chapter (derived from each item's `topic`),
+ * preserving that ordering within and across groups -- so the worst item overall still appears
+ * first, just clustered with its chapter-mates.
  */
-export function groupPriorityByChapter(priority: PriorityWeakness[]): ChapterGroup[] {
+function groupByChapter<T extends { topic: string }>(items: T[]): ChapterGroup<T>[] {
   const order: string[] = []
-  const map = new Map<string, PriorityWeakness[]>()
-  for (const p of priority) {
-    const chapter = chapterOfTopic(p.topic)
+  const map = new Map<string, T[]>()
+  for (const item of items) {
+    const chapter = chapterOfTopic(item.topic)
     if (!map.has(chapter)) {
       map.set(chapter, [])
       order.push(chapter)
     }
-    map.get(chapter)!.push(p)
+    map.get(chapter)!.push(item)
   }
   return order.map((chapter) => ({ chapter, items: map.get(chapter)! }))
+}
+
+export function groupPriorityByChapter(priority: PriorityWeakness[]): ChapterGroup<PriorityWeakness>[] {
+  return groupByChapter(priority)
+}
+
+export function groupQuestionsByChapter<T extends Question>(questions: T[]): ChapterGroup<T>[] {
+  return groupByChapter(questions)
 }

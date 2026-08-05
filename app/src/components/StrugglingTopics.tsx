@@ -1,17 +1,22 @@
 import { scoreColor } from '../lib/color'
-import { groupPriorityByChapter } from '../lib/priorityByChapter'
-import type { PriorityWeakness } from '../types/dashboard'
+import { paperShortLabel } from '../lib/paperLabel'
+import { groupQuestionsByChapter } from '../lib/priorityByChapter'
+import { worstQuestions } from '../lib/worstQuestions'
+import type { Question } from '../types/dashboard'
 
 interface StrugglingTopicsProps {
-  priority: PriorityWeakness[]
+  questions: Question[]
+  testLabels: Record<string, string>
 }
 
-export function StrugglingTopics({ priority }: StrugglingTopicsProps) {
-  if (priority.length === 0) {
+export function StrugglingTopics({ questions, testLabels }: StrugglingTopicsProps) {
+  const worst = worstQuestions(questions)
+
+  if (worst.length === 0) {
     return <p className="mono soft">No specific weak areas identified yet.</p>
   }
 
-  const groups = groupPriorityByChapter(priority)
+  const groups = groupQuestionsByChapter(worst)
 
   return (
     <div className="struggling-topics">
@@ -19,17 +24,17 @@ export function StrugglingTopics({ priority }: StrugglingTopicsProps) {
         <div key={chapter} className="struggling-chapter">
           <h4 className="mono">{chapter}</h4>
           <ul className="struggling-list">
-            {items.map((p, i) => (
-              <li key={i} className="struggling-item">
-                <span className="struggling-topic">{p.topic}</span>
-                <span className="soft mono struggling-meta">
-                  {p.typology} · {p.difficulty}
-                </span>
+            {items.map((q) => (
+              <li key={`${q.test}-${q.qno}`} className="struggling-item">
+                <div className="struggling-item-text">
+                  <div className="struggling-topic">{paperShortLabel(testLabels[q.test] ?? q.test, q.test)}</div>
+                  <div className="soft mono struggling-meta">Question {q.qno}</div>
+                </div>
                 <span
                   className="mono struggling-accuracy"
-                  style={{ backgroundColor: scoreColor(p.accuracy), color: 'var(--card)' }}
+                  style={{ backgroundColor: scoreColor(q.accuracy), color: 'var(--card)' }}
                 >
-                  {Math.round(p.accuracy)}%
+                  {Math.round(q.accuracy)}%
                 </span>
               </li>
             ))}
