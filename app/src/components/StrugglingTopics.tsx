@@ -25,7 +25,10 @@ export function StrugglingTopics({ priority }: StrugglingTopicsProps) {
                 <span className="soft mono struggling-meta">
                   {p.typology} · {p.difficulty}
                 </span>
-                <span className="mono struggling-accuracy" style={{ color: scoreColor(p.accuracy) }}>
+                <span
+                  className="mono struggling-accuracy"
+                  style={{ backgroundColor: scoreColor(p.accuracy), color: 'var(--card)' }}
+                >
                   {Math.round(p.accuracy)}%
                 </span>
               </li>
