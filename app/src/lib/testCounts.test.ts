@@ -12,7 +12,7 @@ function baseData(): DashboardData {
     subjectEnrollment: { Asha: ['Physics', 'Chemistry'], Priya: ['Chemistry'] },
     scored: {
       Physics: {
-        classAvg: { byTypology: {}, byDifficulty: {}, byType: {}, overall: 70, submittedCount: 1, totalStudents: 1, totalTests: 2, totalMarksAllTests: 100 },
+        classAvg: { byTypology: {}, byDifficulty: {}, byType: {}, byTopic: {}, overall: 70, submittedCount: 1, totalStudents: 1, totalTests: 2, totalMarksAllTests: 100 },
         students: {
           Asha: {
             enrolled: true,

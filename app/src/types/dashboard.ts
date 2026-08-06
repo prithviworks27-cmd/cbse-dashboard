@@ -53,6 +53,7 @@ export interface ClassAvg {
   byTypology: Record<string, number>
   byDifficulty: Record<string, number>
   byType: Record<string, number>
+  byTopic: Record<string, number>
   overall: number
   submittedCount: number
   totalStudents: number

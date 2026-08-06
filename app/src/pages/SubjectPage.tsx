@@ -1,3 +1,4 @@
+import { ClassStrugglingTopics } from '../components/ClassStrugglingTopics'
 import { LeaderboardTable } from '../components/LeaderboardTable'
 import { ProtractorRadar, type RadarPoint } from '../components/ProtractorRadar'
 import { QuestionBreakdownTable } from '../components/QuestionBreakdownTable'
@@ -141,7 +142,14 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
           <QuestionBreakdownTable questions={entry.questions} testOrder={subj.testOrder} testLabels={subj.testLabels} />
         </>
       ) : (
-        <p className="mono soft select-prompt">Select a student to see radar charts, the heatmap, and question breakdown.</p>
+        <>
+          <p className="mono soft select-prompt">Select a student to see radar charts, the heatmap, and question breakdown.</p>
+
+          <div className="card">
+            <h3>Where the Class Struggles</h3>
+            <ClassStrugglingTopics byTopic={subj.classAvg.byTopic} />
+          </div>
+        </>
       )}
 
       <h2>Leaderboard</h2>

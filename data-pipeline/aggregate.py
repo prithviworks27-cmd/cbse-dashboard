@@ -282,6 +282,8 @@ def build_scored_subject(
                       _grouped_question_level(submitted_df, ["difficulty"]).iterrows()}
     by_type = {r["type"]: _pct(r["score"], r["marks"]) for _, r in
                _grouped_question_level(submitted_df, ["type"]).iterrows()}
+    by_topic = {r["topic"]: _pct(r["score"], r["marks"]) for _, r in
+                _grouped_question_level(submitted_df, ["topic"]).iterrows()}
 
     total_num, total_den = 0.0, 0.0
     submitted_count = 0
@@ -298,7 +300,7 @@ def build_scored_subject(
             submitted_count += 1
     overall = _pct(total_num, total_den)
     class_avg = ClassAvg(
-        byTypology=by_typology, byDifficulty=by_difficulty, byType=by_type,
+        byTypology=by_typology, byDifficulty=by_difficulty, byType=by_type, byTopic=by_topic,
         overall=overall if overall is not None else 0.0,
         submittedCount=submitted_count,
         totalStudents=len(enrolled_students),
