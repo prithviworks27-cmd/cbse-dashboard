@@ -301,21 +301,62 @@ table.submission-grid td.not-submitted { color: var(--bad); }
 }
 
 /* Overview extras */
-.tests-count-stat {
-  background: none;
-  border: none;
+.tests-count-card {
+  position: relative;
+}
+.tests-count-card-interactive {
   cursor: pointer;
-  text-align: left;
+}
+.tests-count-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.tests-count-chevron {
+  color: var(--ink-soft);
+  font-size: 14px;
+  transition: transform 0.15s ease;
+}
+.tests-count-chevron-open {
+  transform: rotate(180deg);
+}
+/* A dropdown floats over the page instead of pushing surrounding cards down when opened. */
+.tests-count-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 6px 0 0;
+  padding: 10px 14px;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  max-height: 220px;
+  overflow-y: auto;
+  cursor: default;
+}
+.tests-count-pill-list {
+  list-style: none;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
 }
-.test-list {
-  margin: 8px 0 0;
-  padding-left: 16px;
+.tests-count-pill {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--hairline);
+  border-radius: 8px;
+  padding: 5px 14px;
   font-size: 12px;
-  max-height: 140px;
-  overflow-y: auto;
+  line-height: 1.4;
+  color: var(--ink);
 }
 
 .syllabus-row {
