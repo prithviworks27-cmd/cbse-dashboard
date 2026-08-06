@@ -28,6 +28,7 @@ export const sampleDashboard: DashboardData = {
         byTypology: { 'Understanding / Remembering': 82, Applying: 71, Analysing: 60 },
         byDifficulty: { Easy: 85, Medium: 70, Hard: 55 },
         byType: { MCQ: 78, Subjective: 68 },
+        byTopic: { "Coulomb's Law (Subjective)": 65, "Coulomb's Law (MCQ)": 75, "Ohm's Law": 70 },
         overall: 73.5,
         submittedCount: 2,
         totalStudents: 3,

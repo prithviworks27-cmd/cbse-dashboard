@@ -20,6 +20,7 @@ function baseData(overrides: Partial<DashboardData> = {}): DashboardData {
           byTypology: {},
           byDifficulty: {},
           byType: {},
+          byTopic: {},
           overall: 70,
           submittedCount: 2,
           totalStudents: 2,

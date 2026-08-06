@@ -14,7 +14,7 @@ function baseData(): DashboardData {
     },
     scored: {
       Science: {
-        classAvg: { byTypology: {}, byDifficulty: {}, byType: {}, overall: 70, submittedCount: 3, totalStudents: 4, totalTests: 2, totalMarksAllTests: 100 },
+        classAvg: { byTypology: {}, byDifficulty: {}, byType: {}, byTopic: {}, overall: 70, submittedCount: 3, totalStudents: 4, totalTests: 2, totalMarksAllTests: 100 },
         students: {
           Asha: { enrolled: true, overall: 80, byTypology: {}, byDifficulty: {}, byType: {}, byTopic: {}, byTopicDifficulty: {}, trend: [], priority: [],
             questions: [{ test: 't1', topic: 'T', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: 1, marks: 1, accuracy: 100 }] },

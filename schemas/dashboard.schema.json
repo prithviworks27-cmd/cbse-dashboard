@@ -85,11 +85,12 @@
       "properties": {
         "classAvg": {
           "type": "object",
-          "required": ["byTypology", "byDifficulty", "byType", "overall", "submittedCount", "totalStudents", "totalTests", "totalMarksAllTests"],
+          "required": ["byTypology", "byDifficulty", "byType", "byTopic", "overall", "submittedCount", "totalStudents", "totalTests", "totalMarksAllTests"],
           "properties": {
             "byTypology": { "type": "object", "additionalProperties": { "type": "number" } },
             "byDifficulty": { "type": "object", "additionalProperties": { "type": "number" } },
             "byType": { "type": "object", "additionalProperties": { "type": "number" } },
+            "byTopic": { "type": "object", "additionalProperties": { "type": "number" } },
             "overall": { "type": "number" },
             "submittedCount": { "type": "integer" },
             "totalStudents": { "type": "integer" },

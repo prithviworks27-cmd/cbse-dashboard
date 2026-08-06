@@ -72,6 +72,10 @@
           "Numerical": 78.57,
           "Theory": 78.57
         },
+        "byTopic": {
+          "Coulomb's Law (MCQ)": 75.0,
+          "Coulomb's Law (Subjective)": 80.0
+        },
         "overall": 78.57,
         "submittedCount": 2,
         "totalStudents": 3,

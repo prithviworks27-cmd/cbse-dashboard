@@ -35,6 +35,7 @@ class ClassAvg(StrictModel):
     byTypology: Dict[str, float] = Field(default_factory=dict)
     byDifficulty: Dict[str, float] = Field(default_factory=dict)
     byType: Dict[str, float] = Field(default_factory=dict)
+    byTopic: Dict[str, float] = Field(default_factory=dict)
     overall: float
     submittedCount: int
     totalStudents: int

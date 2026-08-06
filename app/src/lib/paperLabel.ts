@@ -11,6 +11,14 @@ export function paperShortLabel(testLabel: string, testId: string): string {
   return testId
 }
 
+// Topic strings in this dashboard carry a trailing "(Paper N)" or "(Paper N, Subjective)"
+// annotation to keep same-topic tests on different papers/formats distinct everywhere else
+// (heatmap, per-student breakdowns -- see priorityByChapter.ts). Some views need the bare
+// topic name instead, with that annotation stripped.
+export function stripPaperSuffix(topic: string): string {
+  return topic.replace(/\s*\(Paper\b[^)]*\)\s*$/i, '').trim()
+}
+
 const MIN_FONT_SIZE = 6
 const MAX_FONT_SIZE = 11
 const LABEL_GAP_PX = 4

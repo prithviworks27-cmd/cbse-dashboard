@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { paperShortLabel, fitPaperLabelFontSize } from './paperLabel'
+import { paperShortLabel, fitPaperLabelFontSize, stripPaperSuffix } from './paperLabel'
 
 describe('paperShortLabel', () => {
   it('extracts "Paper N" from a real test label', () => {
@@ -20,6 +20,30 @@ describe('paperShortLabel', () => {
 
   it('falls back to the test id when the label has no "Paper N"', () => {
     expect(paperShortLabel('Half Yearly Examination 2024-25', 'half_yearly')).toBe('half_yearly')
+  })
+})
+
+describe('stripPaperSuffix', () => {
+  it('strips a plain "(Paper N)" suffix', () => {
+    expect(stripPaperSuffix('Chemical Reactions & Equations — Balancing Equations (Paper 1)')).toBe(
+      'Chemical Reactions & Equations — Balancing Equations',
+    )
+  })
+
+  it('strips a "(Paper N, Subjective)" suffix', () => {
+    expect(stripPaperSuffix('Light — Mirrors: Ray Diagrams & Numericals (Paper 4, Subjective)')).toBe(
+      'Light — Mirrors: Ray Diagrams & Numericals',
+    )
+  })
+
+  it('leaves a topic with no paper suffix unchanged', () => {
+    expect(stripPaperSuffix('Life Processes — Nephron')).toBe('Life Processes — Nephron')
+  })
+
+  it('makes same-topic-different-paper strings collide, which is the point', () => {
+    const a = stripPaperSuffix('Life Processes — Respiration (Paper 5)')
+    const b = stripPaperSuffix('Life Processes — Respiration (Paper 6)')
+    expect(a).toBe(b)
   })
 })
 
