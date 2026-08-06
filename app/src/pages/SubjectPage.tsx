@@ -5,6 +5,7 @@ import { QuestionBreakdownTable } from '../components/QuestionBreakdownTable'
 import { RightWrongBarChart } from '../components/RightWrongBarChart'
 import { StrugglingTopics } from '../components/StrugglingTopics'
 import { SubmissionGrid } from '../components/SubmissionGrid'
+import { TestsCountCard } from '../components/TestsCountCard'
 import { TopicDifficultyHeatmap } from '../components/TopicDifficultyHeatmap'
 import { TrendChart } from '../components/TrendChart'
 import { scoreColor } from '../lib/color'
@@ -66,6 +67,7 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
 
   const subj = scored!
   const entry = student ? subj.students[student] : null
+  const testCounts = student ? studentTestCounts(data, student) : null
   const difficultyOrder = Object.keys(subj.classAvg.byDifficulty)
   const typeOrder = Object.keys(subj.classAvg.byType)
 
@@ -73,7 +75,7 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
     <div className="page">
       <h2>{subject}</h2>
 
-      {student && entry ? (
+      {student && entry && testCounts ? (
         <>
           <div className="card-grid">
             <div className="card">
@@ -82,14 +84,13 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
                 {entry.overall !== null ? `${Math.round(entry.overall)}%` : 'No submissions yet'}
               </p>
             </div>
-            <div className="card">
-              <h3>Tests Taken</h3>
-              <p className="stat-pill stat-pill-good mono">{studentTestCounts(data, student).taken.length}</p>
-            </div>
-            <div className="card">
-              <h3>Tests Due</h3>
-              <p className="stat-pill stat-pill-bad mono">{studentTestCounts(data, student).due.length}</p>
-            </div>
+            <TestsCountCard
+              taken={testCounts.taken.length}
+              due={testCounts.due.length}
+              takenList={testCounts.taken}
+              dueList={testCounts.due}
+              isAverage={false}
+            />
           </div>
 
           <div className="radar-grid radar-grid-2x2">
