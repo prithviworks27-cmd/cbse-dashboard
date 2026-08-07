@@ -34,6 +34,15 @@ export function ProtractorRadar({ data, compare, size = 260, title }: Protractor
     return [center + r * Math.cos(angle), center + r * Math.sin(angle)]
   }
 
+  // Labels sit outside the outer ring (>100%), so they need their own point helper --
+  // pointFor's 0-100 clamp (meant for plotting accuracy values) would otherwise put a label
+  // at the exact same spot as the 100% tick mark, rendering the tick straight through the text.
+  const labelPointFor = (i: number, pct: number): [number, number] => {
+    const angle = angleFor(i)
+    const r = (radius * pct) / 100
+    return [center + r * Math.cos(angle), center + r * Math.sin(angle)]
+  }
+
   const polygonPoints = (series: RadarPoint[]) =>
     series
       .map((s, i) => pointFor(i, s.accuracy).join(','))
@@ -48,7 +57,7 @@ export function ProtractorRadar({ data, compare, size = 260, title }: Protractor
       {data.map((d, i) => {
         const angle = angleFor(i)
         const [x2, y2] = pointFor(i, 100)
-        const [lx, ly] = pointFor(i, 122)
+        const [lx, ly] = labelPointFor(i, 126)
         const tickLen = 4
         const perpX = -Math.sin(angle) * tickLen
         const perpY = Math.cos(angle) * tickLen
