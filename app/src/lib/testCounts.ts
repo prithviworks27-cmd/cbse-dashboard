@@ -10,10 +10,15 @@ export interface TestCounts {
 // test a student appears on the roster for, whether or not they actually submitted it --
 // an unsubmitted test's rows all carry score: null, so row *existence* alone is not a
 // reliable signal (a student can have rows for a test they never took at all).
-export function studentTestCounts(data: DashboardData, student: string): TestCounts {
+//
+// `subject`, when given, scopes the count to just that one subject -- used on subject
+// pages so a multi-subject student's card doesn't also list other subjects' papers.
+// Omitted (as on the cross-subject Overview page), it spans every enrolled subject.
+export function studentTestCounts(data: DashboardData, student: string, subject?: string): TestCounts {
   const taken: string[] = []
   const due: string[] = []
-  const enrolledSubjects = data.subjectEnrollment[student] ?? []
+  const allEnrolled = data.subjectEnrollment[student] ?? []
+  const enrolledSubjects = subject ? allEnrolled.filter((s) => s === subject) : allEnrolled
 
   for (const subject of enrolledSubjects) {
     const scored = data.scored[subject]
