@@ -67,7 +67,7 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
 
   const subj = scored!
   const entry = student ? subj.students[student] : null
-  const testCounts = student ? studentTestCounts(data, student) : null
+  const testCounts = student ? studentTestCounts(data, student, subject) : null
   const difficultyOrder = Object.keys(subj.classAvg.byDifficulty)
   const typeOrder = Object.keys(subj.classAvg.byType)
 
