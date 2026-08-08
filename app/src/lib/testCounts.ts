@@ -5,6 +5,34 @@ export interface TestCounts {
   due: string[]
 }
 
+// Test labels follow a "<Chapter> Paper <N> - <description>" convention throughout the
+// pipeline (e.g. "Motion in 1D Paper 3 - Accelerated Motion"), so the chapter name is
+// reliably everything before " Paper ". Falls back to the whole label for anything that
+// doesn't follow the convention, so it still sorts (just as its own single-item group).
+function chapterOf(label: string): string {
+  const idx = label.indexOf(' Paper ')
+  return idx === -1 ? label : label.slice(0, idx)
+}
+
+function paperNumberOf(label: string): number {
+  const match = label.match(/Paper\s+(\d+)/)
+  return match ? Number(match[1]) : Number.POSITIVE_INFINITY
+}
+
+// Groups same-chapter papers together (alphabetical by chapter), in paper-number order
+// within a chapter, instead of raw pipeline registration order -- which otherwise
+// interleaves chapters however tests happened to be registered (e.g. MCQ papers for
+// every chapter, then that same chapter's subjective papers tacked on at the end).
+function sortByChapter(labels: string[]): string[] {
+  return [...labels].sort((a, b) => {
+    const chapterCompare = chapterOf(a).localeCompare(chapterOf(b))
+    if (chapterCompare !== 0) return chapterCompare
+    const paperCompare = paperNumberOf(a) - paperNumberOf(b)
+    if (paperCompare !== 0) return paperCompare
+    return a.localeCompare(b)
+  })
+}
+
 // A test counts as "taken" for a scored subject only if the student has at least one
 // question row with a non-null score for it. The pipeline emits a question row for every
 // test a student appears on the roster for, whether or not they actually submitted it --
@@ -46,7 +74,7 @@ export function studentTestCounts(data: DashboardData, student: string, subject?
     }
   }
 
-  return { taken, due }
+  return { taken: sortByChapter(taken), due: sortByChapter(due) }
 }
 
 export interface ClassTestCounts {
