@@ -111,11 +111,11 @@ export function SubjectPage({ data, subject, student }: SubjectPageProps) {
               />
             </div>
             <div className="card">
-              <h3>Theory / Numerical</h3>
+              <h3>Theory/Numerical/Assertion Reason</h3>
               <ProtractorRadar
                 data={toRadarPoints(entry.byType, typeOrder)}
                 compare={toRadarPoints(subj.classAvg.byType, typeOrder)}
-                title="Theory vs numerical radar"
+                title="Theory, numerical, assertion-reason radar"
               />
             </div>
             <div className="card">

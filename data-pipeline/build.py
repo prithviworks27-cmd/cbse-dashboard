@@ -49,6 +49,12 @@ class SubjectConfig(BaseModel):
 
     scored_tests: List[ScoredTestSpec] = []
     tracking_grid: Optional[object] = None  # path / DataFrame / list[dict], see parse_format_c
+    # test_id -> test_label for papers whose typology has been registered (see
+    # pending_typology.register_typology) but that have no score sheet yet -- surfaced as
+    # "due" everywhere, same as a tracking-only test nobody has submitted. Once a test_id
+    # here also gets a real ScoredTestSpec entry, it's automatically dropped from here
+    # (graduation logic below), so it never double-counts.
+    pending_tests: Dict[str, str] = {}
 
 
 def _parse_scored_test(spec: ScoredTestSpec, subject: str) -> pd.DataFrame:
@@ -112,6 +118,13 @@ def build_dashboard(
             tracking_data = parse_format_c(cfg.tracking_grid)
         else:
             tracking_data = TrackingData([], {}, {})
+
+        if cfg.pending_tests:
+            tracking_data = TrackingData(
+                test_order=tracking_data.test_order + list(cfg.pending_tests.keys()),
+                test_labels={**tracking_data.test_labels, **cfg.pending_tests},
+                submissions=tracking_data.submissions,
+            )
 
         # --- graduation: a tracking-only test whose test_id now has scored
         # data must be dropped from the tracking placeholder so it is never

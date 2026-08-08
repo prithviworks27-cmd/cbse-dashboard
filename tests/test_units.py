@@ -382,3 +382,61 @@ def test_graduation_end_to_end_no_double_count():
     # totalTests must reflect only the scored test, not double-count the
     # graduated placeholder
     assert physics.classAvg.totalTests == 1
+
+
+def test_pending_typology_test_shows_as_due_with_no_score_sheet():
+    """A test whose typology has been registered but has no score sheet at all yet
+    (SubjectConfig.pending_tests) must still show up as due for every enrolled student,
+    same as a tracking-only test nobody has submitted -- and must never affect scoring."""
+    roster_path = os.path.join(FIXTURES_DIR, "roster.csv")
+    scored_xlsx = os.path.join(FIXTURES_DIR, "physics_test1_format_a.xlsx")
+
+    dashboard = build_dashboard(
+        school="Test School",
+        className="10-A",
+        roster=roster_path,
+        subjects_config={
+            "Physics": SubjectConfig(
+                scored_tests=[
+                    ScoredTestSpec(path=scored_xlsx, format="A", test_id="phy_test1",
+                                    test_label="Physics Test 1"),
+                ],
+                pending_tests={"phy_pending1": "Physics Pending Paper"},
+            ),
+        },
+    )
+
+    physics = dashboard.scored["Physics"]
+    assert "phy_pending1" in physics.trackingOnlyExtra.testOrder
+    assert physics.trackingOnlyExtra.testLabels["phy_pending1"] == "Physics Pending Paper"
+    for subs in physics.trackingOnlyExtra.submissions.values():
+        assert "phy_pending1" not in subs
+    # must not leak into scoring
+    assert physics.classAvg.totalTests == 1
+    assert "phy_pending1" not in physics.testOrder
+
+
+def test_pending_typology_test_dropped_once_scored_test_exists_for_same_id():
+    """Graduation must apply to pending_tests too: once a test_id registered as pending
+    also has a real ScoredTestSpec, it must disappear from trackingOnlyExtra entirely."""
+    roster_path = os.path.join(FIXTURES_DIR, "roster.csv")
+    scored_xlsx = os.path.join(FIXTURES_DIR, "physics_test1_format_a.xlsx")
+
+    dashboard = build_dashboard(
+        school="Test School",
+        className="10-A",
+        roster=roster_path,
+        subjects_config={
+            "Physics": SubjectConfig(
+                scored_tests=[
+                    ScoredTestSpec(path=scored_xlsx, format="A", test_id="phy_test1",
+                                    test_label="Physics Test 1"),
+                ],
+                pending_tests={"phy_test1": "Physics Test 1"},
+            ),
+        },
+    )
+
+    physics = dashboard.scored["Physics"]
+    assert "phy_test1" not in physics.trackingOnlyExtra.testOrder
+    assert physics.testOrder.count("phy_test1") == 1
