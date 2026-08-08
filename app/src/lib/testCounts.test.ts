@@ -73,6 +73,30 @@ describe('studentTestCounts', () => {
     expect(taken).not.toContain('Test 1')
     expect(due).not.toContain('Test 2')
   })
+
+  it('groups taken/due labels by chapter, in paper-number order within a chapter', () => {
+    const data = baseData()
+    data.scored.Physics.testOrder = ['t1', 't2', 't3']
+    data.scored.Physics.testLabels = {
+      t1: 'Motion Paper 2 - Graphs',
+      t2: 'Light Paper 1 - Reflection',
+      t3: 'Motion Paper 1 - Uniform Motion',
+    }
+    data.scored.Physics.students.Asha.questions = [
+      { test: 't1', topic: 'Motion', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: 4, marks: 5, accuracy: 80 },
+      { test: 't2', topic: 'Light', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: 4, marks: 5, accuracy: 80 },
+      { test: 't3', topic: 'Motion', qno: 'Q1', difficulty: 'Easy', typology: 'Applying', type: 'MCQ', score: 4, marks: 5, accuracy: 80 },
+    ]
+    const { taken } = studentTestCounts(data, 'Asha')
+    // Chapter-alphabetical throughout ("Chem Test 1" has no " Paper " so it sorts as its
+    // own single-item group by its full label); within Motion, Paper 1 before Paper 2.
+    expect(taken).toEqual([
+      'Chem Test 1',
+      'Light Paper 1 - Reflection',
+      'Motion Paper 1 - Uniform Motion',
+      'Motion Paper 2 - Graphs',
+    ])
+  })
 })
 
 describe('classTestCounts', () => {
